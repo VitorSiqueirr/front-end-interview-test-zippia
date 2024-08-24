@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import UserFilter from "./components/UserFilter";
 import UserTable from "./components/UserTable";
+import UserDetailsModal from "./components/UserDetailsModal";
 
 function App() {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [error, setError] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
     fetchUsers();
@@ -39,13 +41,24 @@ function App() {
     setFilteredUsers(filtered);
   };
 
+  const handleRowClick = (user) => {
+    setSelectedUser(user);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedUser(null);
+  };
+
   return (
     <div className="App">
       <h1 className="title">User Management Dashboard</h1>
-      <UserFilter onFilterChange={filterUsers} />
-      <button onClick={fetchUsers}>Fetch Users</button>
+      <div className="filter-container">
+        <UserFilter onFilterChange={filterUsers} />
+        <button onClick={fetchUsers}>Fetch Users</button>
+      </div>
       {error && <p className="error">{error}</p>}
-      <UserTable currentUsers={filteredUsers} />
+      <UserTable users={filteredUsers} onRowClick={handleRowClick} />
+      <UserDetailsModal user={selectedUser} onClose={handleCloseModal} />
     </div>
   );
 }

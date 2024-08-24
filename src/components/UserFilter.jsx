@@ -12,6 +12,7 @@ export default function UserFilter({ onFilterChange }) {
 
   return (
     <input
+      className="filter"
       type="text"
       placeholder="Filter by name"
       value={nameFilter}
