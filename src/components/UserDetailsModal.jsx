@@ -7,7 +7,7 @@ export default function UserDetailsModal({ user, onClose }) {
     <div className="modal">
       <div className="mask" onClick={onClose}></div>
       <div className="modal-content">
-        <span className="close" onClick={onClose}>
+        <span role="close" className="close" onClick={onClose}>
           &times;
         </span>
         <h2>User Details</h2>
