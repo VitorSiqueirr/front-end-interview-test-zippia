@@ -1,24 +1,31 @@
 import PropTypes from "prop-types";
 import "../styles/Error.css";
 import { useError } from "../hooks/useError";
+import { useCloseModal } from "../hooks/useCloseModal";
 
-export default function Error({ onClose }) {
-  const { error } = useError();
+export default function Error() {
+  const { error, changeErrorText } = useError();
+  const { closeModal } = useCloseModal();
 
-  {
-    error && (
-      <div className="error-container">
-        <div className="error-mask"></div>
-        <div className="error-content">
-          <span role="close" className="close" onClick={onClose}>
-            &times;
-          </span>
-          <span className="error-title">Error:</span>
-          <p className="error">{error}</p>
+  return (
+    <>
+      {error && (
+        <div className="error-container">
+          <div className="error-mask"></div>
+          <div className="error-content">
+            <span
+              role="close"
+              className="close"
+              onClick={() => closeModal(changeErrorText)}>
+              &times;
+            </span>
+            <span className="error-title">Error:</span>
+            <p className="error">{error}</p>
+          </div>
         </div>
-      </div>
-    );
-  }
+      )}
+    </>
+  );
 }
 
 Error.propTypes = {

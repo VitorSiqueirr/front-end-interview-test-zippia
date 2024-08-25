@@ -1,15 +1,15 @@
 import PropTypes from "prop-types";
 import { useMemo, useState } from "react";
 import "../styles/UserTable.css";
-import { useFetchUsers } from "../hooks/useFetchUsers";
+import { useUsers } from "../hooks/useUsers";
 
-export default function UserTable({ onRowClick, usersPerPage = 5 }) {
+export default function UserTable({ usersPerPage = 5 }) {
   const [sortConfig, setSortConfig] = useState({
     key: "name",
     direction: "asc",
   });
   const [currentPage, setCurrentPage] = useState(1);
-  const { filteredUsers } = useFetchUsers();
+  const { filteredUsers, changeSelectedUser } = useUsers();
 
   const sortedUsers = useMemo(() => {
     let sortableUsers = [...filteredUsers];
@@ -65,6 +65,10 @@ export default function UserTable({ onRowClick, usersPerPage = 5 }) {
     return "▼";
   };
 
+  const onRowClick = (id) => {
+    changeSelectedUser(id);
+  };
+
   return (
     <>
       <table>
@@ -99,7 +103,7 @@ export default function UserTable({ onRowClick, usersPerPage = 5 }) {
             <tr
               className="table-row"
               key={user.id}
-              onClick={() => onRowClick(user)}>
+              onClick={() => onRowClick(user.id)}>
               <td className="table-name">{user.name}</td>
               <td className="table-username">{user.username}</td>
               <td className="table-email">{user.email}</td>

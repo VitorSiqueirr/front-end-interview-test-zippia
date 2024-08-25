@@ -1,17 +1,24 @@
 import PropTypes from "prop-types";
 import "../styles/UserDetailsModal.css";
-import { useFetchUsers } from "../hooks/useFetchUsers";
+import { useUsers } from "../hooks/useUsers";
+import { useCloseModal } from "../hooks/useCloseModal";
 
-export default function UserDetailsModal({ onClose }) {
-  const { selectedUser } = useFetchUsers();
+export default function UserDetailsModal() {
+  const { selectedUser, changeSelectedUser } = useUsers();
+  const { closeModal } = useCloseModal();
 
   if (!selectedUser) return null;
 
   return (
     <div className="modal">
-      <div className="mask" onClick={onClose}></div>
+      <div
+        className="mask"
+        onClick={() => closeModal(changeSelectedUser)}></div>
       <div className="modal-content">
-        <span role="close" className="close" onClick={onClose}>
+        <span
+          role="close"
+          className="close"
+          onClick={() => closeModal(changeSelectedUser)}>
           &times;
         </span>
         <h2>User Details</h2>

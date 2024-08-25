@@ -10,8 +10,12 @@ export const useError = () => {
 
   const { error, setError } = context;
 
+  const changeErrorText = (text) => {
+    setError(text);
+  };
+
   return {
     error,
-    setError,
+    changeErrorText,
   };
 };

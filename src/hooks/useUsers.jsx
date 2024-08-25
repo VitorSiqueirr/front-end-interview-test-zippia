@@ -3,12 +3,12 @@ import { fetchUsers } from "../api/fetch";
 import { useError } from "./useError";
 import { UserContext } from "../contexts/context/UserContext";
 
-export const useFetchUsers = () => {
+export const useUsers = () => {
   const context = useContext(UserContext);
-  const { setError } = useError();
+  const { changeErrorText } = useError();
 
   if (!context) {
-    throw new Error("useFetchUsers must be used within a UserProvider");
+    throw new Error("useUsers must be used within a UserProvider");
   }
 
   const {
@@ -31,16 +31,32 @@ export const useFetchUsers = () => {
       setUsers(result.data);
       setFilteredUsers(result.data);
     } else if (result.error) {
-      setError(result.error);
+      changeErrorText(result.error);
     }
+  };
+
+  const changeSelectedUser = (id) => {
+    if (!id) {
+      setSelectedUser(null);
+      return;
+    }
+    const user = users.find((user) => user.id === id);
+    setSelectedUser(user);
+  };
+
+  const filterUsers = (nameFilter) => {
+    const filtered = users.filter((user) =>
+      user.name.toLowerCase().includes(nameFilter.toLowerCase())
+    );
+    setFilteredUsers(filtered);
   };
 
   return {
     users,
     filteredUsers,
     selectedUser,
-    setSelectedUser,
-    setFilteredUsers,
+    changeSelectedUser,
+    filterUsers,
     handleFetchUsers,
   };
 };
