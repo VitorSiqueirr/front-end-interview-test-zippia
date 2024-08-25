@@ -26,7 +26,8 @@ export default function UserDetailsModal({ user, onClose }) {
             <strong>Website:</strong> {user.website}
           </p>
           <p>
-            <strong>Address:</strong> {user.address.street}, {user.address.city}
+            <strong>Address:</strong> {user.address.street},{" "}
+            {user.address.suite} , {user.address.city}
           </p>
           <p>
             <strong>Company:</strong> {user.company.name}

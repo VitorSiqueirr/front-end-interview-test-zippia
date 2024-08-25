@@ -9,21 +9,21 @@ describe("UserTable Component", () => {
   const users = [
     {
       id: 1,
-      name: "Leanne Graham",
-      username: "Bret",
-      email: "Sincere@april.biz",
-      phone: "1-770-736-8031 x56442",
-      address: { city: "Gwenborough" },
-      company: { name: "Romaguera-Crona" },
-    },
-    {
-      id: 2,
       name: "Ervin Howell",
       username: "Antonette",
       email: "Shanna@melissa.tv",
       phone: "010-692-6593 x09125",
       address: { city: "Wisokyburgh" },
       company: { name: "Deckow-Crist" },
+    },
+    {
+      id: 2,
+      name: "Leanne Graham",
+      username: "Bret",
+      email: "Sincere@april.biz",
+      phone: "1-770-736-8031 x56442",
+      address: { city: "Gwenborough" },
+      company: { name: "Romaguera-Crona" },
     },
   ];
 
@@ -46,10 +46,10 @@ describe("UserTable Component", () => {
   });
 
   it("handles pagination correctly", async () => {
-    render(<UserTable users={users} usersPerPage={1} />);
+    render(<UserTable users={users} onRowClick={vi.fn()} usersPerPage={1} />);
 
-    expect.soft(screen.getByText("Leanne Graham")).toBeInTheDocument();
-    expect.soft(screen.queryByText("Ervin Howell")).not.toBeInTheDocument();
+    expect.soft(screen.queryByText("Ervin Howell")).toBeInTheDocument();
+    expect.soft(screen.queryByText("Leanne Graham")).not.toBeInTheDocument();
 
     expect
       .soft(screen.queryByRole("button", { name: "Prev" }))
@@ -61,7 +61,7 @@ describe("UserTable Component", () => {
       .soft(screen.queryByRole("button", { name: "Next" }))
       .not.toBeInTheDocument();
 
-    expect.soft(screen.getByText("Ervin Howell")).toBeInTheDocument();
-    expect.soft(screen.queryByText("Leanne Graham")).not.toBeInTheDocument();
+    expect.soft(screen.queryByText("Leanne Graham")).toBeInTheDocument();
+    expect.soft(screen.queryByText("Ervin Howell")).not.toBeInTheDocument();
   });
 });

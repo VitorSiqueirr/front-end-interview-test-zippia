@@ -13,6 +13,7 @@ describe("UserDetailsModal component", () => {
     website: "johndoe.com",
     address: {
       street: "123 Main St",
+      suite: "Apt 101",
       city: "Anytown",
     },
     company: {
@@ -32,6 +33,13 @@ describe("UserDetailsModal component", () => {
       .soft(
         screen.getByText((content) =>
           content.includes(userExemple.address.street)
+        )
+      )
+      .toBeInTheDocument();
+    expect
+      .soft(
+        screen.getByText((content) =>
+          content.includes(userExemple.address.suite)
         )
       )
       .toBeInTheDocument();
