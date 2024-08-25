@@ -34,17 +34,3 @@
   width: 100%;
   z-index: 1000;
 }
-
-.close {
-  font-size: 1.5rem;
-  position: absolute;
-  top: 0.5rem;
-  right: 1rem;
-  cursor: pointer;
-  transition: transform 0.3s, color 0.3s;
-}
-
-.close:hover {
-  transform: scale(2);
-  color: #c20000;
-}

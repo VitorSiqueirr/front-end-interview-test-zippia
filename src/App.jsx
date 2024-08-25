@@ -28,6 +28,7 @@ function App() {
 
   const handleCloseModal = () => {
     setSelectedUser(null);
+    setError(null);
   };
 
   const handleFetchUsers = async () => {
@@ -49,7 +50,18 @@ function App() {
           Fetch Users
         </button>
       </div>
-      {error && <p className="error">{error}</p>}
+      {error && (
+        <div className="error-container">
+          <div className="error-mask"></div>
+          <div className="error-content">
+            <span role="close" className="close" onClick={handleCloseModal}>
+              &times;
+            </span>
+            <span className="error-title">Error:</span>
+            <p className="error">{error}</p>
+          </div>
+        </div>
+      )}
       <UserTable users={filteredUsers} onRowClick={handleRowClick} />
       <UserDetailsModal user={selectedUser} onClose={handleCloseModal} />
     </div>
