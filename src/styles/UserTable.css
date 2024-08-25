@@ -23,7 +23,6 @@ table {
 
 .table-row:hover {
   background-color: hsla(252, 100%, 85%, 0.15);
-  font-weight: 600;
 }
 
 th,
