@@ -59,7 +59,7 @@ yarn
 
 ## How to run the project in development
 
-In the project directorie, run the script:
+In the project directory, run the script:
 
 ```sh
 npm run dev
