@@ -1,0 +1,54 @@
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-title {
+  cursor: poniter;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #0b0031;
+  transition: all 0.3s;
+}
+
+.table-title:hover {
+  background-color: #3429635d;
+  color: #8668ff;
+  filter: drop-shadow(0 0 0.5rem #0b0031);
+}
+
+.table-row {
+  transition: all 0.3s;
+}
+
+.table-row:hover {
+  background-color: hsla(252, 100%, 85%, 0.15);
+  font-weight: 600;
+}
+
+th,
+td {
+  cursor: pointer;
+  border: 1px solid #8668ff;
+  padding: 1rem;
+  text-align: center;
+  font-size: 1rem;
+}
+
+th {
+  background-color: #8668ff;
+}
+
+.pag-button {
+  margin: 0.75rem 0;
+  padding: 0.5rem 0.75rem;
+  background-color: #2700b3;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.pag-button:hover {
+  background-color: #1d0085;
+  transform: scale(1.15);
+}

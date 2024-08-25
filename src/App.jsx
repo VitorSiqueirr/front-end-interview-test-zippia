@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import "./App.css";
+import { fetchUsers } from "./api/fetch";
 import UserFilter from "./components/UserFilter";
 import UserTable from "./components/UserTable";
 import UserDetailsModal from "./components/UserDetailsModal";
-import { fetchUsers } from "./api/fetch";
+import "./styles/App.css";
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -45,7 +45,9 @@ function App() {
       <h1 className="title">User Management Dashboard</h1>
       <div className="filter-container">
         <UserFilter onFilterChange={filterUsers} />
-        <button onClick={handleFetchUsers}>Fetch Users</button>
+        <button className="fetch-button" onClick={handleFetchUsers}>
+          Fetch Users
+        </button>
       </div>
       {error && <p className="error">{error}</p>}
       <UserTable users={filteredUsers} onRowClick={handleRowClick} />

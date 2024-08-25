@@ -1,23 +1,36 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import "../styles/UserTable.css";
 
 export default function UserTable({ users, onRowClick, usersPerPage = 5 }) {
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
+  const [sortConfig, setSortConfig] = useState({
+    key: "name",
+    direction: "asc",
+  });
   const [currentPage, setCurrentPage] = useState(1);
 
-  const sortedUsers = [...users].sort((a, b) => {
-    if (sortConfig.key) {
-      const aValue = a[sortConfig.key];
-      const bValue = b[sortConfig.key];
-      if (aValue < bValue) {
-        return sortConfig.direction === "asc" ? -1 : 1;
-      }
-      if (aValue > bValue) {
-        return sortConfig.direction === "asc" ? 1 : -1;
-      }
+  const sortedUsers = useMemo(() => {
+    let sortableUsers = [...users];
+    if (sortConfig.key !== null) {
+      sortableUsers.sort((a, b) => {
+        const aValue = sortConfig.key.includes(".")
+          ? sortConfig.key.split(".").reduce((o, i) => o[i], a)
+          : a[sortConfig.key];
+        const bValue = sortConfig.key.includes(".")
+          ? sortConfig.key.split(".").reduce((o, i) => o[i], b)
+          : b[sortConfig.key];
+
+        if (aValue < bValue) {
+          return sortConfig.direction === "asc" ? -1 : 1;
+        }
+        if (aValue > bValue) {
+          return sortConfig.direction === "asc" ? 1 : -1;
+        }
+        return 0;
+      });
     }
-    return 0;
-  });
+    return sortableUsers;
+  }, [users, sortConfig]);
 
   const handleSort = (key) => {
     let direction = "asc";
@@ -43,32 +56,39 @@ export default function UserTable({ users, onRowClick, usersPerPage = 5 }) {
     }
   };
 
+  const getSortIcon = (key) => {
+    if (sortConfig.key === key) {
+      return sortConfig.direction === "asc" ? "▼" : "▲";
+    }
+    return "▼";
+  };
+
   return (
     <>
       <table>
         <thead>
           <tr>
             <th className="table-title" onClick={() => handleSort("name")}>
-              Name
+              Name <span>{getSortIcon("name")}</span>
             </th>
             <th className="table-title" onClick={() => handleSort("username")}>
-              Username
+              Username <span>{getSortIcon("username")}</span>
             </th>
             <th className="table-title" onClick={() => handleSort("email")}>
-              Email
+              Email <span>{getSortIcon("email")}</span>
             </th>
             <th className="table-title" onClick={() => handleSort("phone")}>
-              Phone
+              Phone <span>{getSortIcon("phone")}</span>
             </th>
             <th
               className="table-title"
               onClick={() => handleSort("address.city")}>
-              City
+              City <span>{getSortIcon("address.city")}</span>
             </th>
             <th
               className="table-title"
               onClick={() => handleSort("company.name")}>
-              Company
+              Company <span>{getSortIcon("company.name")}</span>
             </th>
           </tr>
         </thead>
@@ -88,9 +108,15 @@ export default function UserTable({ users, onRowClick, usersPerPage = 5 }) {
           ))}
         </tbody>
       </table>
-      {currentPage > 1 && <button onClick={handlePrevPage}>Prev</button>}
+      {currentPage > 1 && (
+        <button className="pag-button" onClick={handlePrevPage}>
+          Prev
+        </button>
+      )}
       {currentPage < Math.ceil(users.length / usersPerPage) && (
-        <button onClick={handleNextPage}>Next</button>
+        <button className="pag-button" onClick={handleNextPage}>
+          Next
+        </button>
       )}
     </>
   );

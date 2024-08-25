@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import "../styles/UserDetailsModal.css";
 
 export default function UserDetailsModal({ user, onClose }) {
   if (!user) return null;
