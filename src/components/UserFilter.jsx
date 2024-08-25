@@ -1,27 +1,38 @@
 import { useState } from "react";
-import PropTypes from "prop-types";
+import Button from "./Button";
+import Input from "./Input";
 import "../styles/UserFilter.css";
+import { useFetchUsers } from "../hooks/useFetchUsers";
 
-export default function UserFilter({ onFilterChange }) {
+export default function UserFilter() {
   const [nameFilter, setNameFilter] = useState("");
+  const { users, setFilteredUsers, handleFetchUsers } = useFetchUsers();
+
+  const filterUsers = (nameFilter) => {
+    const filtered = users.filter((user) =>
+      user.name.toLowerCase().includes(nameFilter.toLowerCase())
+    );
+    setFilteredUsers(filtered);
+  };
 
   const handleInputChange = (e) => {
     const value = e.target.value;
     setNameFilter(value);
-    onFilterChange(value);
+    filterUsers(value);
   };
 
   return (
-    <input
-      className="filter"
-      type="text"
-      placeholder="Filter by name"
-      value={nameFilter}
-      onChange={handleInputChange}
-    />
+    <div className="filter-container">
+      <Input
+        className={"filter"}
+        type={"text"}
+        placeholder={"Filter By Name..."}
+        value={nameFilter}
+        onChange={handleInputChange}
+      />
+      <Button className="fetch-button" onClick={handleFetchUsers}>
+        Fetch Users
+      </Button>
+    </div>
   );
 }
-
-UserFilter.propTypes = {
-  onFilterChange: PropTypes.func.isRequired,
-};

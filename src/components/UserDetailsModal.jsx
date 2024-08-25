@@ -1,8 +1,11 @@
 import PropTypes from "prop-types";
 import "../styles/UserDetailsModal.css";
+import { useFetchUsers } from "../hooks/useFetchUsers";
 
-export default function UserDetailsModal({ user, onClose }) {
-  if (!user) return null;
+export default function UserDetailsModal({ onClose }) {
+  const { selectedUser } = useFetchUsers();
+
+  if (!selectedUser) return null;
 
   return (
     <div className="modal">
@@ -14,23 +17,23 @@ export default function UserDetailsModal({ user, onClose }) {
         <h2>User Details</h2>
         <div>
           <p>
-            <strong>Name:</strong> {user.name}
+            <strong>Name:</strong> {selectedUser.name}
           </p>
           <p>
-            <strong>Email:</strong> {user.email}
+            <strong>Email:</strong> {selectedUser.email}
           </p>
           <p>
-            <strong>Phone:</strong> {user.phone}
+            <strong>Phone:</strong> {selectedUser.phone}
           </p>
           <p>
-            <strong>Website:</strong> {user.website}
+            <strong>Website:</strong> {selectedUser.website}
           </p>
           <p>
-            <strong>Address:</strong> {user.address.street},{" "}
-            {user.address.suite} , {user.address.city}
+            <strong>Address:</strong> {selectedUser.address.street},{" "}
+            {selectedUser.address.suite} , {selectedUser.address.city}
           </p>
           <p>
-            <strong>Company:</strong> {user.company.name}
+            <strong>Company:</strong> {selectedUser.company.name}
           </p>
         </div>
       </div>
@@ -39,6 +42,5 @@ export default function UserDetailsModal({ user, onClose }) {
 }
 
 UserDetailsModal.propTypes = {
-  user: PropTypes.object,
   onClose: PropTypes.func.isRequired,
 };

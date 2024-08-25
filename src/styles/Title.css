@@ -1,0 +1,6 @@
+.title {
+  font-size: 3rem;
+  color: #efefef;
+  text-align: center;
+  filter: drop-shadow(1px 1px 0.5rem #3800ff);
+}

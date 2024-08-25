@@ -1,16 +1,18 @@
 import PropTypes from "prop-types";
 import { useMemo, useState } from "react";
 import "../styles/UserTable.css";
+import { useFetchUsers } from "../hooks/useFetchUsers";
 
-export default function UserTable({ users, onRowClick, usersPerPage = 5 }) {
+export default function UserTable({ onRowClick, usersPerPage = 5 }) {
   const [sortConfig, setSortConfig] = useState({
     key: "name",
     direction: "asc",
   });
   const [currentPage, setCurrentPage] = useState(1);
+  const { filteredUsers } = useFetchUsers();
 
   const sortedUsers = useMemo(() => {
-    let sortableUsers = [...users];
+    let sortableUsers = [...filteredUsers];
     if (sortConfig.key !== null) {
       sortableUsers.sort((a, b) => {
         const aValue = sortConfig.key.includes(".")
@@ -30,7 +32,7 @@ export default function UserTable({ users, onRowClick, usersPerPage = 5 }) {
       });
     }
     return sortableUsers;
-  }, [users, sortConfig]);
+  }, [filteredUsers, sortConfig]);
 
   const handleSort = (key) => {
     let direction = "asc";
@@ -45,7 +47,7 @@ export default function UserTable({ users, onRowClick, usersPerPage = 5 }) {
   const currentUsers = sortedUsers.slice(indexOfFirstUser, indexOfLastUser);
 
   const handleNextPage = () => {
-    if (currentPage < Math.ceil(users.length / usersPerPage)) {
+    if (currentPage < Math.ceil(filteredUsers.length / usersPerPage)) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -113,7 +115,7 @@ export default function UserTable({ users, onRowClick, usersPerPage = 5 }) {
           Prev
         </button>
       )}
-      {currentPage < Math.ceil(users.length / usersPerPage) && (
+      {currentPage < Math.ceil(filteredUsers.length / usersPerPage) && (
         <button className="pag-button" onClick={handleNextPage}>
           Next
         </button>
@@ -123,7 +125,6 @@ export default function UserTable({ users, onRowClick, usersPerPage = 5 }) {
 }
 
 UserTable.propTypes = {
-  users: PropTypes.array.isRequired,
   onRowClick: PropTypes.func.isRequired,
   usersPerPage: PropTypes.number,
 };

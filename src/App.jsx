@@ -1,26 +1,16 @@
-import { useEffect, useState } from "react";
-import { fetchUsers } from "./api/fetch";
+import { useFetchUsers } from "./hooks/useFetchUsers";
 import UserFilter from "./components/UserFilter";
 import UserTable from "./components/UserTable";
 import UserDetailsModal from "./components/UserDetailsModal";
+import Error from "./components/Error";
+import Title from "./components/Title";
 import "./styles/App.css";
+import { useError } from "./hooks/useError";
 
 function App() {
-  const [users, setUsers] = useState([]);
-  const [filteredUsers, setFilteredUsers] = useState([]);
-  const [error, setError] = useState(null);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const { setSelectedUser } = useFetchUsers();
 
-  useEffect(() => {
-    handleFetchUsers();
-  }, []);
-
-  const filterUsers = (nameFilter) => {
-    const filtered = users.filter((user) =>
-      user.name.toLowerCase().includes(nameFilter.toLowerCase())
-    );
-    setFilteredUsers(filtered);
-  };
+  const { setError } = useError();
 
   const handleRowClick = (user) => {
     setSelectedUser(user);
@@ -31,39 +21,13 @@ function App() {
     setError(null);
   };
 
-  const handleFetchUsers = async () => {
-    const result = await fetchUsers();
-    if (result.data) {
-      setUsers(result.data);
-      setFilteredUsers(result.data);
-    } else if (result.error) {
-      setError(result.error);
-    }
-  };
-
   return (
     <div className="App">
-      <h1 className="title">User Management Dashboard</h1>
-      <div className="filter-container">
-        <UserFilter onFilterChange={filterUsers} />
-        <button className="fetch-button" onClick={handleFetchUsers}>
-          Fetch Users
-        </button>
-      </div>
-      {error && (
-        <div className="error-container">
-          <div className="error-mask"></div>
-          <div className="error-content">
-            <span role="close" className="close" onClick={handleCloseModal}>
-              &times;
-            </span>
-            <span className="error-title">Error:</span>
-            <p className="error">{error}</p>
-          </div>
-        </div>
-      )}
-      <UserTable users={filteredUsers} onRowClick={handleRowClick} />
-      <UserDetailsModal user={selectedUser} onClose={handleCloseModal} />
+      <Title text={"User Management Dashboard"} />
+      <UserFilter />
+      <Error onClose={handleCloseModal} />
+      <UserTable onRowClick={handleRowClick} />
+      <UserDetailsModal onClose={handleCloseModal} />
     </div>
   );
 }

@@ -2,3 +2,27 @@
   width: 60%;
   padding: 0.75rem 0.5rem;
 }
+
+.fetch-button {
+  margin: 1rem 0;
+  padding: 1rem 1.75rem;
+  box-shadow: 0px 0px 0.5rem 0.5rem #3800ff inset;
+  background-color: #2700b3;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.fetch-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0px 0px 4px 2px #3800ff;
+}
+
+.filter-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
