@@ -142,12 +142,6 @@ Or
 yarn test
 ```
 
-## Component Structure
-
-- `UserDetailsModal.jsx`: Modal component to display user details.
-- `UserFilter.jsx`: Component for the input of filtering users.
-- `UserTable.jsx`: Table component to display the list of users.
-
 ## Styles
 
-The styles are defined in the [`src/App.css`] file.
+The styles are defined in the [`src/styles`] folder.
