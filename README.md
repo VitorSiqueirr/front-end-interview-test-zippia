@@ -149,3 +149,4 @@ yarn test
 ## Styles
 
 The styles are defined in the [`src/styles`] folder.
+And this project doesn't have a mobile style, only desktop version, to better visualize please use a desktop.
