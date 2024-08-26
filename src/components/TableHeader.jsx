@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { SORT_DIRECTIONS } from "../consts/table";
+import { SORT_DIRECTIONS } from "../const/table";
 
 export default function TableHeader({ columns, sortConfig, onSort }) {
   const getSortIcon = (key) => {

@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { useMemo, useState } from "react";
 import { useUsers } from "../hooks/useUsers";
 import TableHeader from "./TableHeader";
-import { SORT_DIRECTIONS, TABLE_COLUMNS } from "../consts/table";
+import { SORT_DIRECTIONS, TABLE_COLUMNS } from "../const/table";
 import "../styles/UserTable.css";
 import TableBody from "./TableBody";
 import Pagination from "./Pagination";

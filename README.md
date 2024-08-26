@@ -13,22 +13,44 @@ index.html
 src/
   api/
     fetch.js
-  App.css
   App.jsx
+  auxiliary/
+    table.js
   components/
+    Button.jsx
+    Error.jsx
+    Input.jsx
+    Pagination.jsx
+    TableBody.jsx
+    TableHeader.jsx
+    Title.jsx
     UserDetailsModal.jsx
     UserFilter.jsx
     UserTable.jsx
-  index.css
+  const/
+    table.js
+  contexts/
+    context/
+    provider/
+  hooks/
+    useCloseModal.jsx
+    useError.jsx
+    useUsers.jsx
   main.jsx
+  styles/
+    index.css
+    App.css
+    UserFilter.css
 tests/
+  api/
+    fetch.test.js
   components/
-    UserDetailsModal.test.jsx
     UserFilter.test.jsx
-    UserTable.test.jsx
+  hooks/
+    useCloseModal.test.jsx
+    useError.test.jsx
+    useUsers.test.jsx
   support/
-    mockServer.js
-    setup.js
 ```
 
 ## Prerequisites
@@ -105,8 +127,9 @@ yarn preview
 Run the application in production mode.\
 Open [http://localhost:4173/](http://localhost:4173/) to view it in the browser.
 
-## How to run the tests using Jest
+## How to run the tests using Vitest
 
+I couldn't do all the tests because of the relative short spam to deliver the project, but i did it the best i could with that time.
 In the project directory, run the following script:
 
 ```sh
