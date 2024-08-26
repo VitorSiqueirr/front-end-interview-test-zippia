@@ -40,7 +40,11 @@ src/
   styles/
     index.css
     App.css
+    Error.css
+    Title.css
+    UserDetailsModal.css
     UserFilter.css
+    UserTable.css
 tests/
   api/
     fetch.test.js
