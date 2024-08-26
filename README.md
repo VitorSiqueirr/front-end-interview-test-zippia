@@ -13,7 +13,6 @@ index.html
 src/
   api/
     fetch.js
-  App.jsx
   auxiliary/
     table.js
   components/
@@ -36,6 +35,7 @@ src/
     useCloseModal.jsx
     useError.jsx
     useUsers.jsx
+  App.jsx
   main.jsx
   styles/
     index.css
