@@ -73,6 +73,8 @@ cd front-end-interview-test-zippia
 
 2. Install the dependencies:
 
+In the project directory, run the script:
+
 ```sh
 npm install
 ```
