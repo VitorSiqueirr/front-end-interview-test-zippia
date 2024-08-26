@@ -1,134 +1,80 @@
 import PropTypes from "prop-types";
 import { useMemo, useState } from "react";
-import "../styles/UserTable.css";
 import { useUsers } from "../hooks/useUsers";
+import TableHeader from "./TableHeader";
+import { SORT_DIRECTIONS, TABLE_COLUMNS } from "../consts/table";
+import "../styles/UserTable.css";
+import TableBody from "./TableBody";
+import Pagination from "./Pagination";
+import { getNestedValue } from "../auxiliary/table";
 
 export default function UserTable({ usersPerPage = 5 }) {
   const [sortConfig, setSortConfig] = useState({
     key: "name",
-    direction: "asc",
+    direction: SORT_DIRECTIONS.ASC,
   });
   const [currentPage, setCurrentPage] = useState(1);
   const { filteredUsers, changeSelectedUser } = useUsers();
 
   const sortedUsers = useMemo(() => {
-    let sortableUsers = [...filteredUsers];
-    if (sortConfig.key !== null) {
-      sortableUsers.sort((a, b) => {
-        const aValue = sortConfig.key.includes(".")
-          ? sortConfig.key.split(".").reduce((o, i) => o[i], a)
-          : a[sortConfig.key];
-        const bValue = sortConfig.key.includes(".")
-          ? sortConfig.key.split(".").reduce((o, i) => o[i], b)
-          : b[sortConfig.key];
+    return [...filteredUsers].sort((a, b) => {
+      const aValue = getNestedValue(a, sortConfig.key);
+      const bValue = getNestedValue(b, sortConfig.key);
 
-        if (aValue < bValue) {
-          return sortConfig.direction === "asc" ? -1 : 1;
-        }
-        if (aValue > bValue) {
-          return sortConfig.direction === "asc" ? 1 : -1;
-        }
-        return 0;
-      });
-    }
-    return sortableUsers;
+      if (aValue < bValue)
+        return sortConfig.direction === SORT_DIRECTIONS.ASC ? -1 : 1;
+      if (aValue > bValue)
+        return sortConfig.direction === SORT_DIRECTIONS.ASC ? 1 : -1;
+      return 0;
+    });
   }, [filteredUsers, sortConfig]);
 
+  const currentUsers = useMemo(() => {
+    const indexOfLastUser = currentPage * usersPerPage;
+    const indexOfFirstUser = indexOfLastUser - usersPerPage;
+    return sortedUsers.slice(indexOfFirstUser, indexOfLastUser);
+  }, [sortedUsers, currentPage, usersPerPage]);
+
   const handleSort = (key) => {
-    let direction = "asc";
-    if (sortConfig.key === key && sortConfig.direction === "asc") {
-      direction = "desc";
-    }
-    setSortConfig({ key, direction });
+    setSortConfig((prevConfig) => ({
+      key,
+      direction:
+        prevConfig.key === key && prevConfig.direction === SORT_DIRECTIONS.ASC
+          ? SORT_DIRECTIONS.DESC
+          : SORT_DIRECTIONS.ASC,
+    }));
   };
 
-  const indexOfLastUser = currentPage * usersPerPage;
-  const indexOfFirstUser = indexOfLastUser - usersPerPage;
-  const currentUsers = sortedUsers.slice(indexOfFirstUser, indexOfLastUser);
-
   const handleNextPage = () => {
-    if (currentPage < Math.ceil(filteredUsers.length / usersPerPage)) {
-      setCurrentPage(currentPage + 1);
-    }
+    setCurrentPage((prev) =>
+      Math.min(prev + 1, Math.ceil(filteredUsers.length / usersPerPage))
+    );
   };
 
   const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const getSortIcon = (key) => {
-    if (sortConfig.key === key) {
-      return sortConfig.direction === "asc" ? "▼" : "▲";
-    }
-    return "▼";
-  };
-
-  const onRowClick = (id) => {
-    changeSelectedUser(id);
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
   };
 
   return (
     <>
       <table>
-        <thead>
-          <tr>
-            <th className="table-title" onClick={() => handleSort("name")}>
-              Name <span>{getSortIcon("name")}</span>
-            </th>
-            <th className="table-title" onClick={() => handleSort("username")}>
-              Username <span>{getSortIcon("username")}</span>
-            </th>
-            <th className="table-title" onClick={() => handleSort("email")}>
-              Email <span>{getSortIcon("email")}</span>
-            </th>
-            <th className="table-title" onClick={() => handleSort("phone")}>
-              Phone <span>{getSortIcon("phone")}</span>
-            </th>
-            <th
-              className="table-title"
-              onClick={() => handleSort("address.city")}>
-              City <span>{getSortIcon("address.city")}</span>
-            </th>
-            <th
-              className="table-title"
-              onClick={() => handleSort("company.name")}>
-              Company <span>{getSortIcon("company.name")}</span>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentUsers.map((user) => (
-            <tr
-              className="table-row"
-              key={user.id}
-              onClick={() => onRowClick(user.id)}>
-              <td className="table-name">{user.name}</td>
-              <td className="table-username">{user.username}</td>
-              <td className="table-email">{user.email}</td>
-              <td className="table-phone">{user.phone}</td>
-              <td className="table-address">{user.address.city}</td>
-              <td className="table-company-name">{user.company.name}</td>
-            </tr>
-          ))}
-        </tbody>
+        <TableHeader
+          columns={TABLE_COLUMNS}
+          sortConfig={sortConfig}
+          onSort={handleSort}
+        />
+        <TableBody users={currentUsers} onRowClick={changeSelectedUser} />
       </table>
-      {currentPage > 1 && (
-        <button className="pag-button" onClick={handlePrevPage}>
-          Prev
-        </button>
-      )}
-      {currentPage < Math.ceil(filteredUsers.length / usersPerPage) && (
-        <button className="pag-button" onClick={handleNextPage}>
-          Next
-        </button>
-      )}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={Math.ceil(filteredUsers.length / usersPerPage)}
+        onNextPage={handleNextPage}
+        onPrevPage={handlePrevPage}
+      />
     </>
   );
 }
 
 UserTable.propTypes = {
-  onRowClick: PropTypes.func.isRequired,
   usersPerPage: PropTypes.number,
 };

@@ -26,12 +26,16 @@ export const useUsers = () => {
   }, []);
 
   const handleFetchUsers = async () => {
-    const result = await fetchUsers();
-    if (result.data) {
-      setUsers(result.data);
-      setFilteredUsers(result.data);
-    } else if (result.error) {
-      changeErrorText(result.error);
+    try {
+      const result = await fetchUsers();
+      if (result && result.data) {
+        setUsers(result.data);
+        setFilteredUsers(result.data);
+      } else {
+        throw new Error("No data received from fetchUsers");
+      }
+    } catch (error) {
+      changeErrorText(error.message || "Failed to fetch users");
     }
   };
 
